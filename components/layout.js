@@ -34,12 +34,12 @@ export default function Layout({children, home, menuItems}){
                         </h2>
                     </>
                 )}
-                {
+                { menuItems ? (
                     menuItems.map((item)=>{
                         return (
                             <a key={item.id}>{item.title}</a>
                         )
-                    })
+                    }) ) : ''
                 }
             </header>
             <main>{children}</main>

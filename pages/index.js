@@ -3,6 +3,8 @@ import Link from 'next/link'
 import Layout, {siteTitle} from '../components/layout';
 import { getSortedPostData } from '../lib/posts'
 import utilStyles from "../styles/utils.module.css";
+import { useSelector } from "react-redux";
+import { selectAuthState } from '../slices/authSlice';
 
 export async function getStaticProps(){
   const posts = await getSortedPostData();
@@ -14,6 +16,7 @@ export async function getStaticProps(){
 }
 
 export default function Home({posts}) {
+  const authState = useSelector(selectAuthState);
   return (
     <Layout home>
       <Head>
@@ -25,6 +28,8 @@ export default function Home({posts}) {
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
+        {authState ? (<p>Logged in</p>): (<p>Logged out</p>)}
+        <Link href='/en'><a>En</a></Link>
         <ul className={utilStyles.list}>
           {posts.map((post)=>{
             return (
