@@ -9,7 +9,7 @@ import utilStyles from "../../styles/utils.module.css";
 export default function En({homePageData, initData}){
     const authState = useSelector(selectAuthState);
     const dispatch = useDispatch();
-    console.log(homePageData);
+    
     function handleClick(){
         if(authState){
             dispatch(setAuthState(false));
@@ -18,7 +18,7 @@ export default function En({homePageData, initData}){
         }
     }
     return (
-        <MainFrame>
+        <MainFrame initData={initData.data.response}>
             <div className={utilStyles.pageInner}>
                 <div className={utilStyles.container}>
                     <div>
