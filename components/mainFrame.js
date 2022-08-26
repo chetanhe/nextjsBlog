@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import logo from "../public/images/logo.png";
-import { getAndroidAppUrl, hasAndroidApp, hasIOSApp, hasMobileApp, replaceAll, getIosUrl } from "../util.js";
+import { getAndroidAppUrl, hasAndroidApp, hasIOSApp, hasMobileApp, replaceAll, getIosUrl, hasLanguageDropdown } from "../util.js";
 
 function HowWeHelp({initData}){
     let html = initData.TXT_CONTACT_BLOCK;
@@ -35,6 +36,7 @@ function MobileAppICon({initData}){
     const androidUrl = getAndroidAppUrl(initData);
     const iosurl = getIosUrl(initData);
     
+
     if(hasMobileApp(initData)){
         html.push(<span className="footer-title">{initData.TXT_FOOTER_DOWN_APP}</span>);
         if(hasIOSApp(initData)){
@@ -43,6 +45,8 @@ function MobileAppICon({initData}){
         if(hasAndroidApp(initData)){
             html.push(<a href={androidUrl}><Image src={initData.COMMON_IMG_URL+'/google-play-white.svg'} alt="Google play" width={135} height={40} /></a>);
         }
+    }else{
+        return null;
     }
     
     return (
@@ -51,6 +55,42 @@ function MobileAppICon({initData}){
                 return <div key={i}>{item}</div>
             })}
         </div>
+    );
+}
+
+function LanguagesDropDown({initData}){
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleLanguageDropDown(e){
+        e.preventDefault();
+        setIsOpen(!isOpen);
+    }
+
+    let html = [];
+    if(hasLanguageDropdown(initData)){
+        const style = {display: isOpen ? 'block' : 'none'};
+        html.push(<span className="footer-title">{initData.TXT_SELECT_LANGUAGE}</span>);
+        html.push(<p>{initData.TXT_SERVICE_LANG}</p>);
+        html.push(<div className="dropdown">
+            <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" className="dropdown-toggle uk" href="#" onClick={handleLanguageDropDown}>
+                <span id="selected">English</span>
+                <span className="icon icon-arrow-down"></span>
+            </a>
+            <ul className="dropdown-menu" style={style}>
+                <li className=""><a href="/de" className="de">Deutsch</a></li>
+                <li className=""><a href="/pl" className="pl">Polski</a></li>
+            </ul>
+        </div>);
+    }else{
+        return null;
+    }
+
+    return (
+        <>
+            {html.map((item, index)=>{
+                return <div key={index}>{item}</div>
+            })}
+        </>
     );
 }
 
@@ -149,7 +189,12 @@ export default function MainFrame({children, initData}){
                             <div className="col-lg-3 col-md-6 safety-app">
                                 <MobileAppICon initData={initData}/>
                             </div>
+                            <div className="col-lg-3 col-md-6 languages">
+                                <LanguagesDropDown initData={initData}/>
+                            </div>
                         </div>
+                        <div className="pay-cards" dangerouslySetInnerHTML={{__html:initData.FOOTER_PAYMENT_LOGO}}></div>
+                        <div className="copy-right">{initData.TXT_COPYRIGHT}</div>
                     </div>
                 </footer>
             </div>
