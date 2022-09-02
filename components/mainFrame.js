@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import logo from "../public/images/logo.png";
 import { getAndroidAppUrl, hasAndroidApp, hasIOSApp, hasMobileApp, replaceAll, getIosUrl, hasLanguageDropdown } from "../util.js";
+import Menu from "./menu";
 
 function HowWeHelp({initData}){
     let html = initData.TXT_CONTACT_BLOCK;
@@ -97,11 +99,34 @@ function LanguagesDropDown({initData}){
 export default function MainFrame({children, initData}){
     const csrEmail = initData.domain_details.domain_csr_email;
 
+    useEffect(()=>{
+
+        function handleScroll(){
+            if(window.scrollY >= 75){
+                document.getElementsByTagName("header")[0].classList.add("sticky");
+                document.getElementById("panel-menu").style.top = "40px";
+            }else{
+                document.getElementsByTagName("header")[0].classList.remove("sticky");
+                document.getElementById("panel-menu").style.top = "75px";
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
+
     function openChat(e){
         e.preventDefault();
         //window.open('https://tawk.to/chat/57aca97bb6326fb1504160ba/default','popup','width=400,height=500');
         //window.open(initData.data.response.CHAT_OPEN_URL.replace(/window.open\(|\)|;/gi, "")}`);
         window.open(initData.CHAT_URL, 'popup', 'width=400,height=500');
+    }
+
+    function toggleMegaMenu(e){
+        e.preventDefault();
+        document.body.classList.toggle("menu-open");
     }
 
     return(
@@ -110,11 +135,12 @@ export default function MainFrame({children, initData}){
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <div id="wrap">
+            <Menu initData={initData}/>
             <header>
                 <div className="container container-lg d-flex align-items-center justify-content-between">
                     <ul className="left-nav">
-                        <li key="1"><a className="megamenu" href="">All treatments</a></li>
-                        <li key="2"><a href="https://121doc.dev-projects.com/en/about">About us</a></li>
+                        <li key="1"><a className="megamenu" onClick={toggleMegaMenu} href="">All treatments</a></li>
+                        <li key="2"><Link href="erectile-dysnfunction"><a>About us</a></Link></li>
                         <li key="3" className="faq-page">
                             <a href="https://121doc.dev-projects.com/en/about/faq">FAQs</a>
                         </li>

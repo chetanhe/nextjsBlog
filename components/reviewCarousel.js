@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function ReviewCarousel({reviewData}){
 
     useEffect(()=>{
-        
+        console.log("carousel running");
         var timer = setInterval(()=>{
             if(jQuery){
                 clearInterval(timer);
@@ -34,6 +34,7 @@ export default function ReviewCarousel({reviewData}){
         }, 1000);
 
         const cleanOwlCarousel = () => {
+            console.log("carousel cleaning");
             clearInterval(timer);
             var owl = jQuery(".home-about-us .owl-carousel");
             owl.trigger("destroy.owl.carousel");
