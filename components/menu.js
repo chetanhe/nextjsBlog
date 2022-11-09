@@ -6,35 +6,35 @@ function MegaMenuItemLinks({columns}){
         <ul style={{"width":"1000px"}}>
             {
                 columns.map((column)=>{
-                    return(
+                    return (
                         <li key={column.column_id}>
                             <ul>
                                 {
                                     column.data.map((data)=>{
-                                        return(
-                                        <li key={data.category_id}>
-                                            <Link href={data.url}><a>{data.name}</a></Link>
-                                            <ul>
-                                                {
-                                                    data.products.map((product)=>{
-                                                        return(
-                                                        <li key={product.product_id}>
-                                                            <Link href={product.url}>
-                                                                <a>{product.name}</a>
-                                                            </Link>
-                                                        </li>
-                                                        )
-                                                    })
-                                                }
-                                            </ul>
-                                        </li>
-                                        )
+                                        return (
+                                            <li key={data.category_id}>
+                                                <Link href={data.url}>{data.name}</Link>
+                                                <ul>
+                                                    {
+                                                        data.products.map((product)=>{
+                                                            return (
+                                                                <li key={product.product_id}>
+                                                                    <Link href={product.url}>
+                                                                        {product.name}
+                                                                    </Link>
+                                                                </li>
+                                                            );
+                                                        })
+                                                    }
+                                                </ul>
+                                            </li>
+                                        );
                                     })
                                 }
 
                             </ul>
                         </li>
-                    )
+                    );
                 })
             }
         </ul>

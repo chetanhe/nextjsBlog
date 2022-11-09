@@ -29,17 +29,17 @@ export default function Home({posts}) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         {authState ? (<p>Logged in</p>): (<p>Logged out</p>)}
-        <Link href='/en'><a>En</a></Link>
+        <Link href='/en'>En</Link>
         <ul className={utilStyles.list}>
           {posts.map((post)=>{
             return (
               <li className={utilStyles.listItem} key={post.id}>
-                <Link href={`/posts/${post.id}`}><a>{post.title}</a></Link>
+                <Link href={`/posts/${post.id}`}>{post.title}</Link>
               </li>
             );
           })}
         </ul>
       </section>
     </Layout>
-  )
+  );
 }
