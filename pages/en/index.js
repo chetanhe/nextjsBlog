@@ -9,7 +9,7 @@ import ReviewCarousel from '@/components/reviewCarousel';
 import DoctorCarousel from '@/components/doctorCarousel';
 import { selectAuthState, setAuthState } from '../../slices/authSlice';
 import utilStyles from '../../styles/utils.module.css';
-import { replaceAll } from 'util';
+import { replaceAll } from '../../util.js';
 import { setJsLibraryState } from 'slices/mainSlice';
 
 function HomePromises({ homePageData, initData }) {
@@ -24,8 +24,8 @@ function HomePromises({ homePageData, initData }) {
     let ratting =
       homePageData.data.response.page_data.response.serviceReview
         .average_rating_value || 0;
-    //description = replaceAll('$TOTAL_CUST', totalCust, description);
-    //description = replaceAll('$RATTING', totalCust, description);
+    description = replaceAll('$TOTAL_CUST', totalCust, description);
+    description = replaceAll('$RATTING', ratting, description);
     return description;
   };
 
