@@ -4,7 +4,6 @@ import Script from 'next/script';
 
 class MyDocument extends Document {
   render() {
-    console.log(cdnUrls);
     return (
       <Html>
         <Head>
@@ -13,12 +12,12 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           ></script>
           <link
-            href={`${cdnUrls[process.env.NEXT_PUBLIC_ENV]}/css/base.css?v=7.9`}
+            href={`${cdnUrls}/css/base.css?v=7.9`}
             rel="stylesheet"
             as="style"
           />
           <link
-            href={`${cdnUrls[process.env.NEXT_PUBLIC_ENV]}/css/brand.css?v=8.4`}
+            href={`${cdnUrls}/css/brand.css?v=8.4`}
             rel="stylesheet"
             as="style"
           />

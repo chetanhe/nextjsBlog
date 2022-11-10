@@ -9,7 +9,24 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'hhccdn.dev-projects.com',
       },
+      {
+        protocol: 'https',
+        hostname: '121cdn.stg-projects.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'hhccdn.stg-projects.com',
+      },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en',
+        permanent: true,
+      },
+    ];
   },
 };
 

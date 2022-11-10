@@ -1,3 +1,4 @@
+import { clientId, deviceType, deviceId, clientSecret, apiUrl } from 'config';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTokenGenerated } from 'slices/mainSlice';
@@ -6,15 +7,15 @@ import { wrapper } from '../store';
 //import '../base.css'
 
 function init() {
-  const url = 'https://api.dev-projects.com/v4/init';
+  const url = `${apiUrl}/init`;
 
   let reqData = {
-    client_id: '121doc',
-    client_secret: 'fxX5T46KUPxqGpt8uli0fOUi48snl93_',
+    client_id: clientId,
+    client_secret: clientSecret,
     grant_type: 'client_credentials',
     brand_id: 7,
-    device_id: '12345',
-    device_type: 1,
+    device_id: deviceId,
+    device_type: deviceType,
     language: 'en',
   };
 

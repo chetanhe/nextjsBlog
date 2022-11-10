@@ -11,6 +11,14 @@ import { selectAuthState, setAuthState } from '../../slices/authSlice';
 import utilStyles from '../../styles/utils.module.css';
 import { replaceAll } from '../../util.js';
 import { setJsLibraryState } from 'slices/mainSlice';
+import {
+  cdnUrls,
+  apiUrl,
+  clientId,
+  clientSecret,
+  deviceId,
+  deviceType,
+} from 'config';
 
 function HomePromises({ homePageData, initData }) {
   const reviewLogo = () =>
@@ -165,7 +173,7 @@ export default function En({ homePageData, initData }) {
     <>
       <Head>
         <link
-          href="https://121cdn.dev-projects.com/new121doc/css/bootstrap.min.css"
+          href={`${cdnUrls}/css/bootstrap.min.css`}
           rel="stylesheet"
           as="style"
         />
@@ -186,7 +194,7 @@ export default function En({ homePageData, initData }) {
                       <div className="col-md-6">
                         <div className="home-banner">
                           <Image
-                            src="https://121cdn.dev-projects.com/new121doc/images/en/theme/home-banner.jpg"
+                            src={`${cdnUrls}/images/en/theme/home-banner.jpg`}
                             alt="home banner"
                             width={670}
                             height={596}
@@ -333,7 +341,7 @@ export default function En({ homePageData, initData }) {
           }
         />
         <Script
-          src="https://121cdn.dev-projects.com/new121doc/js/owl.carousel.min.js?v=1.1"
+          src={`${cdnUrls}/js/owl.carousel.min.js?v=1.1`}
           strategy="lazyOnload"
           onLoad={() =>
             dispatch(
@@ -347,14 +355,14 @@ export default function En({ homePageData, initData }) {
 }
 
 export async function getStaticProps() {
-  const url = 'https://api.dev-projects.com/v4/init';
+  const url = `${apiUrl}/init`;
   let reqData = {
-    client_id: '121doc',
-    client_secret: 'fxX5T46KUPxqGpt8uli0fOUi48snl93_',
+    client_id: clientId,
+    client_secret: clientSecret,
     grant_type: 'client_credentials',
     brand_id: 7,
-    device_id: '12345',
-    device_type: 1,
+    device_id: deviceId,
+    device_type: deviceType,
     language: 'en',
   };
   const initReq = await fetch(url, {
@@ -368,14 +376,14 @@ export async function getStaticProps() {
 
   reqData = {
     brand_id: 7,
-    device_id: '12345',
+    device_id: deviceId,
     domain_id: 57,
     page_id: 3,
     path: 'en/',
     gender: '',
-    device_type: 1,
+    device_type: deviceType,
   };
-  const homeUrl = 'https://api.dev-projects.com/v4/init/checkrewriteurl';
+  const homeUrl = `${apiUrl}/init/checkrewriteurl`;
   const homereq = await fetch(homeUrl, {
     method: 'POST',
     headers: {
