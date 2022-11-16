@@ -2,7 +2,9 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, Suspense, useEffect, useState } from 'react';
+import { Fragment, Suspense, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setmobileMenuToggle } from 'slices/mainSlice';
 import logo from '../public/images/logo.png';
 import {
   getAndroidAppUrl,
@@ -14,8 +16,8 @@ import {
   hasLanguageDropdown,
   getSafetyLogo,
 } from '../util.js';
-
 import Menu from './menu';
+//import '../base.css';
 
 const CartBag = dynamic(() => import('../components/cartBag.js'), {
   suspense: true,
@@ -70,6 +72,7 @@ function MobileAppICon({ initData }) {
             alt="App store"
             width={135}
             height={40}
+            unoptimized={true}
           />
         </a>
       );
@@ -82,6 +85,7 @@ function MobileAppICon({ initData }) {
             alt="Google play"
             width={135}
             height={40}
+            unoptimized={true}
           />
         </a>
       );
@@ -91,9 +95,9 @@ function MobileAppICon({ initData }) {
   }
 
   return (
-    <div>
+    <div className="app-logo">
       {html.map((item, i) => {
-        return <div key={i}>{item}</div>;
+        return <Fragment key={i}>{item}</Fragment>;
       })}
     </div>
   );
@@ -168,6 +172,10 @@ function LanguagesDropDown({ initData }) {
 
 export default function MainFrame({ children, initData }) {
   const csrEmail = initData.domain_details.domain_csr_email;
+  const contactUsBoxRef = useRef(null);
+  const quickLinkBoxRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     function handleScroll() {
@@ -196,6 +204,26 @@ export default function MainFrame({ children, initData }) {
   function toggleMegaMenu(e) {
     e.preventDefault();
     document.body.classList.toggle('menu-open');
+    dispatch(setmobileMenuToggle());
+  }
+
+  function openHamBurgerMenu(e) {
+    e.preventDefault();
+    dispatch(setmobileMenuToggle());
+  }
+
+  function toggleFooterSec(ref) {
+    if (window.innerWidth <= 768) {
+      const element = ref.current;
+      if (window.getComputedStyle(element).display === 'none') {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+
+      element.classList.toggle('animate__animated');
+      element.classList.toggle('animate__fadeIn');
+    }
   }
 
   return (
@@ -244,6 +272,11 @@ export default function MainFrame({ children, initData }) {
                   <span className="icon icon-login"></span>
                 </a>
               </li>
+              <li key="5" className="mmenu">
+                <a aria-label="hamburger" onClick={openHamBurgerMenu}>
+                  <span className="icon icon-hamburger"></span>
+                </a>
+              </li>
             </ul>
           </div>
         </header>
@@ -268,10 +301,13 @@ export default function MainFrame({ children, initData }) {
             <div className="container">
               <div className="row">
                 <div className="col-lg-3 col-md-6 contact-us">
-                  <span className="footer-title">
+                  <span
+                    className="footer-title"
+                    onClick={() => toggleFooterSec(contactUsBoxRef)}
+                  >
                     {initData.TXT_CONTACT_TITLE}
                   </span>
-                  <div className="mob-collapse">
+                  <div className="mob-collapse" ref={contactUsBoxRef}>
                     <ul className="ls-none">
                       <li key="1">
                         <a
@@ -312,10 +348,13 @@ export default function MainFrame({ children, initData }) {
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-6 quick-links">
-                  <span className="footer-title">
+                  <span
+                    className="footer-title"
+                    onClick={() => toggleFooterSec(quickLinkBoxRef)}
+                  >
                     {initData.TXT_FOOTER_LINKS_HEADER}
                   </span>
-                  <div className="mob-collapse">
+                  <div className="mob-collapse" ref={quickLinkBoxRef}>
                     <ul
                       className="ls-none"
                       dangerouslySetInnerHTML={{

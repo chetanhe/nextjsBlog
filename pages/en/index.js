@@ -21,6 +21,46 @@ import {
 } from 'config';
 
 function HomePromises({ homePageData, initData }) {
+  const scriptLoaded = useSelector(
+    (state) => state.main.jqueryLoaded && state.main.owlCarouselLoaded
+  );
+
+  useEffect(() => {
+    if (scriptLoaded && window.innerWidth <= 768) {
+      jQuery('.safety-list').owlCarousel({
+        loop: !0,
+        margin: 20,
+        dots: false,
+        nav: false,
+        autoplay: !0,
+        stagePadding: 40,
+        smartSpeed: 500,
+        autoplayTimeout: 5000,
+        responsive: {
+          0: {
+            items: 1,
+            stagePadding: 30,
+          },
+          768: {
+            items: 2,
+            stagePadding: 40,
+          },
+          1000: {
+            items: 2,
+          },
+        },
+      });
+    }
+
+    const cleanOwlCarousel = () => {
+      var owl = jQuery('.safety-list');
+      owl.trigger('destroy.owl.carousel');
+      owl.addClass('off');
+    };
+
+    return cleanOwlCarousel;
+  }, [scriptLoaded]);
+
   const reviewLogo = () =>
     `${initData.review_platform.toLowerCase()}-with-stars.png`;
 
@@ -354,6 +394,9 @@ export default function En({ homePageData, initData }) {
   );
 }
 
+import { sendRequest } from '../../util';
+import { useEffect } from 'react';
+
 export async function getStaticProps() {
   const url = `${apiUrl}/init`;
   let reqData = {
@@ -365,14 +408,8 @@ export async function getStaticProps() {
     device_type: deviceType,
     language: 'en',
   };
-  const initReq = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(reqData),
-  });
-  const initData = await initReq.json();
+
+  const initData = await sendRequest(url, reqData);
 
   reqData = {
     brand_id: 7,
@@ -384,15 +421,12 @@ export async function getStaticProps() {
     device_type: deviceType,
   };
   const homeUrl = `${apiUrl}/init/checkrewriteurl`;
-  const homereq = await fetch(homeUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: initData.data.response.token,
-    },
-    body: JSON.stringify(reqData),
-  });
-  const homePageData = await homereq.json();
+
+  const homePageData = await sendRequest(
+    homeUrl,
+    reqData,
+    initData.data.response.token
+  );
 
   const menuItems = [
     { id: 1, title: 'Erectile dysfunction', href: '/erectile-dysfunction' },

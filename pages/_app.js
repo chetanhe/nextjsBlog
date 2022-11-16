@@ -1,10 +1,11 @@
 import { clientId, deviceType, deviceId, clientSecret, apiUrl } from 'config';
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTokenGenerated } from 'slices/mainSlice';
 import { sendRequest } from 'util';
 import { wrapper } from '../store';
-//import '../base.css'
+//import '../base.css';
 
 function init() {
   const url = `${apiUrl}/init`;
@@ -36,7 +37,17 @@ function MyApp({ Component, pageProps }) {
       dispatch(setTokenGenerated({ status: true }));
     });
   }, []);
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+      </Head>
+      <Component {...pageProps} />;
+    </>
+  );
 }
 
 export default wrapper.withRedux(MyApp);

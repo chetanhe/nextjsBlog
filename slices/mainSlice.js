@@ -4,6 +4,7 @@ const initialState = {
   jqueryLoaded: false,
   owlCarouselLoaded: false,
   tokenGenerated: false,
+  mobileMenuOpen: false,
 };
 
 const mainSlice = createSlice({
@@ -17,9 +18,20 @@ const mainSlice = createSlice({
     setTokenGenerated: (state, action) => {
       state.tokenGenerated = action.payload.status;
     },
+    setmobileMenuToggle: (state, action) => {
+      state.mobileMenuOpen = !state.mobileMenuOpen;
+    },
+    setmobileMenuClose: (state) => {
+      state.mobileMenuOpen = false;
+    },
   },
 });
 
-export const { setJsLibraryState, setTokenGenerated } = mainSlice.actions;
+export const {
+  setJsLibraryState,
+  setTokenGenerated,
+  setmobileMenuToggle,
+  setmobileMenuClose,
+} = mainSlice.actions;
 
 export default mainSlice.reducer;
